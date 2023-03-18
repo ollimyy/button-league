@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### has passwords, need to learn secrets management ###
-src/main/resources/application.properties
+ /src/main/resources/application.properties

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button League</title>
+</head>
+<body>
+    <h1>Button League</h1>
+    <h2>Matches:</h2>
+    <th:block th:each="match : ${ matches }">
+        <p th:text="${ match.homeTeam.name + ' '
+        + match.homeScore + ' '
+        + match.awayScore + ' '
+        + match.awayTeam.name}"></th:text></p>
+    </th:block>
+</body>
+</html>
