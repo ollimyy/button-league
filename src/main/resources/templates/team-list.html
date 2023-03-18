@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button League</title>
+</head>
+<body>
+  <h1>Button League</h1>
+  <h2>Matches:</h2>
+  <table>
+    <thead>
+      <th><!-- empty for position in the table --></th>
+      <th>Team</th>
+      <th>MP</th>
+      <th>W</th>
+      <th>D</th>
+      <th>L</th>
+      <th>GF</th>
+      <th>GA</th>
+      <th>GD</th>
+      <th>Pts</th>
+    </thead>
+    <tbody>
+      <tr th:each="team : ${ teams }">
+        <td></td>
+        <td th:text="${team.name}">Name</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

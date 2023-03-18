@@ -9,10 +9,12 @@
     <h1>Button League</h1>
     <h2>Matches:</h2>
     <th:block th:each="match : ${ matches }">
-        <p th:text="${ match.homeTeam.name + ' '
-        + match.homeScore + ' '
-        + match.awayScore + ' '
-        + match.awayTeam.name}"></th:text></p>
+        <div class="scorecard">
+            <span class="team-name" th:text="${match.homeTeam.name}">Home Team</span>
+            <span class="score" th:text="${match.homeScore}">#</span> <br>
+            <span class="team-name" th:text="${match.awayTeam.name}">Away Team</span>
+            <span class="score" th:text="${match.awayScore}">#</span>
+        </div><!-- remove this br when styling --><br>
     </th:block>
 </body>
 </html>

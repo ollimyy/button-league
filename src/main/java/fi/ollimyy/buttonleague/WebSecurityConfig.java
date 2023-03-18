@@ -13,7 +13,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/", "/match-list", "/matches", "/teams").permitAll()
+                .requestMatchers("/", "/match-list", "team-list", "/matches", "/teams").permitAll()
                 .anyRequest().authenticated()
              .and()
                 .formLogin()
