@@ -3,6 +3,7 @@ package fi.ollimyy.buttonleague.domain;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Formula;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private LocalDateTime startDateTime;
 
     @ManyToOne
     @JoinColumn (name = "home_team_id")
@@ -53,6 +56,14 @@ public class Match {
 
     public void setId(Long matchId) {
         this.id = matchId;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
     public Team getHomeTeam() {
