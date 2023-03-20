@@ -22,17 +22,17 @@
       <th>Pts</th>
     </thead>
     <tbody>
-      <tr th:each="team : ${ teams }">
+      <tr th:each="teamStats : ${ teamsStats }">
         <td></td>
-        <td th:text="${team.name}">Name</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td th:text="${teamStats.team.name}">Name</td>
+        <td th:text="${ teamStats.matchesPlayed }"></td>
+        <td th:text="${ teamStats.wins }">#</td>
+        <td th:text="${ teamStats.draws }">#</td>
+        <td th:text="${ teamStats.losses }">#</td>
+        <td th:text="${ teamStats.goalsFor }"></td>
+        <td th:text="${ teamStats.goalsAgainst }">#</td>
+        <td th:text="${ teamStats.goalDifference }">#</td>
+        <td th:text="${ teamStats.points }">#</td>
       </tr>
     </tbody>
   </table>

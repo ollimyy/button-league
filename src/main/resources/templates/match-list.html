@@ -15,10 +15,11 @@
             <!-- and then inside that we iterate the List<Match> to show all matches of that date -->
             <div class="scorecard" th:each="match : ${ matches.value }">
                 <span class="team-name" th:text="${match.homeTeam.name}">Home Team</span>
-                <span class="score" th:text="${match.homeScore}">#</span> <br>
+                <span class="score" th:text="${match.homeScore}">#</span><br>
                 <span class="team-name" th:text="${match.awayTeam.name}">Away Team</span>
                 <span class="score" th:text="${match.awayScore}">#</span>
-            </div><br>
+                <br><br>
+            </div>
         </div>
     </div>
 </body>
