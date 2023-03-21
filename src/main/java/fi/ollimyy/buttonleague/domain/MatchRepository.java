@@ -27,10 +27,14 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     @Query("SELECT m FROM Match m WHERE (m.homeTeam = :team OR m.awayTeam = :team) AND m.homeScore = m.awayScore")
     List<Match> findMatchesDrawnByTeam(@Param("team") Team team);
 
-    @Query("SELECT SUM(CASE WHEN m.homeTeam = :team THEN m.homeScore ELSE m.awayScore END) FROM Match m WHERE ((m.homeTeam = :team OR m.awayTeam = :team) AND m.awayScore IS NOT NULL AND m.homeScore IS NOT NULL)")
+    /* https://www.postgresql.org/docs/current/functions-conditional.html#FUNCTIONS-COALESCE-NVL-IFNULL
+    The sum returns null if the team has not played any matches yet. The awayScore and homeScore are null when the team has upcoming matches, they have not played yet.
+    If the team has no matches in the database the sum has an empty set and will return null. In these cases using coalesce we return 0 goals scored or conceded.
+    */
+    @Query("SELECT COALESCE(SUM(CASE WHEN m.homeTeam = :team THEN m.homeScore ELSE m.awayScore END), 0) FROM Match m WHERE m.homeTeam = :team OR m.awayTeam = :team")
     int findGoalsScoredByTeam(@Param("team") Team team);
 
-    @Query("SELECT SUM(CASE WHEN m.homeTeam = :team THEN m.awayScore ELSE m.homeScore END) FROM Match m WHERE ((m.homeTeam = :team OR m.awayTeam = :team) AND m.awayScore IS NOT NULL AND m.homeScore IS NOT NULL)")
+    @Query("SELECT COALESCE(SUM(CASE WHEN m.homeTeam = :team THEN m.awayScore ELSE m.homeScore END), 0) FROM Match m WHERE m.homeTeam = :team OR m.awayTeam = :team")
     int findGoalsConcededByTeam(@Param("team") Team team);
 
 
