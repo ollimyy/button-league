@@ -6,11 +6,16 @@ import fi.ollimyy.buttonleague.model.TeamStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TeamStatsService {
 
     @Autowired
     MatchRepository matchRepository;
+
+    @Autowired
+    TeamStatsComparatorFactory teamStatsComparatorFactory;
 
     public TeamStats getStatsForTeam(Team team) {
         TeamStats teamStats = new TeamStats();
@@ -34,5 +39,9 @@ public class TeamStatsService {
         return teamStats;
     }
 
+    public List<TeamStats> sortTeamStatsForLeagueTable(List<TeamStats> teamStatsList) {
+        teamStatsList.sort(teamStatsComparatorFactory.createTeamStatsComparator());
+        return teamStatsList;
+    }
 
 }

@@ -32,6 +32,8 @@ public class TeamsController {
             teamsStats.add(teamStatsService.getStatsForTeam(team));
         }
 
+        teamsStats = teamStatsService.sortTeamStatsForLeagueTable(teamsStats);
+
         model.addAttribute("teamsStats", teamsStats);
         return "league-table";
     }

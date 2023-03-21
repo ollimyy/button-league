@@ -37,5 +37,26 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     @Query("SELECT COALESCE(SUM(CASE WHEN m.homeTeam = :team THEN m.awayScore ELSE m.homeScore END), 0) FROM Match m WHERE m.homeTeam = :team OR m.awayTeam = :team")
     int findGoalsConcededByTeam(@Param("team") Team team);
 
+    // returns positive value if team1 won more head-to-head games, negative if team2, and 0 if equal amount
+    @Query("SELECT " +
+            //wins by team 1
+            "SUM(CASE WHEN m.homeTeam = :team1 AND m.homeScore > m.awayScore OR m.awayTeam = :team1 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END) -" +
+            // - wins by team 2
+            "SUM(CASE WHEN m.homeTeam = :team2 AND m.homeScore > m.awayScore OR m.awayTeam = :team2 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END)" +
+            "FROM Match m " +
+            //from head-to-head matches
+            "WHERE (m.homeTeam = :team1 AND m.awayTeam = :team2) OR (m.homeTeam = :team2 AND m.awayTeam = :team1)")
+    int findHeadToHeadWinDifference(@Param("team1") Team team1, @Param("team2") Team team2);
 
+    // returns positive value if team1 scored more away goals in head-to-head games, negative if team2, and 0 if equal amount
+    @Query("SELECT " +
+            //away goals by team 1
+            "SUM(CASE WHEN m.awayTeam = :team1 THEN m.awayScore ELSE 0 END) -" +
+            // - away goals by team 2
+            "SUM(CASE WHEN m.awayTeam = :team2 THEN m.awayScore ELSE 0 END)" +
+            "FROM Match m " +
+            //from head-to-head matches
+            "WHERE (m.homeTeam = :team1 AND m.awayTeam = :team2) OR (m.homeTeam = :team2 AND m.awayTeam = :team1)")
+    int findHeadToHeadAwayGoalDifference(@Param("team1") Team team1, @Param("team2") Team team2);
 }
+
