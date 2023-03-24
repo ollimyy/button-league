@@ -7,6 +7,10 @@
 </head>
 <body>
 <h1>Button League</h1>
+<nav>
+  <a class="nav-item" href="/match-list">Matches</a>
+  <a class="nav-item" href="/league-table">Table</a>
+</nav>
 <h2><span th:text="${ team.name }"></span> players:</h2>
 <ul th:each="player : ${ players }">
   <li th:text="${ player.number + ' ' + player.firstName + ' ' + player.lastName }"></li>
