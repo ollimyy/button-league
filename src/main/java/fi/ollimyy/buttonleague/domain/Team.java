@@ -18,8 +18,17 @@ public class Team {
     @ManyToMany(mappedBy = "teams")
     private Set<Match> matches = new HashSet<>();
 
+    @OneToMany
+    List<Player> players;
+
     //constructors
     public Team() {
+    }
+
+    public Team(String name, Set<Match> matches, List<Player> players) {
+        this.name = name;
+        this.matches = matches;
+        this.players = players;
     }
 
     public Team(String name) {
@@ -42,5 +51,31 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(Set<Match> matches) {
+        this.matches = matches;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", matches=" + matches +
+                ", players=" + players +
+                '}';
     }
 }
