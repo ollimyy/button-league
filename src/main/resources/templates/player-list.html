@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button League</title>
+</head>
+<body>
+<h1>Button League</h1>
+<h2><span th:text="${ team.name }"></span> players:</h2>
+<ul th:each="player : ${ players }">
+  <li th:text="${ player.number + ' ' + player.firstName + ' ' + player.lastName }"></li>
+</ul>
+</body>
+</html>
