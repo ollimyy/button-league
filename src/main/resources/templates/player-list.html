@@ -11,6 +11,22 @@
   <a class="nav-item" href="/match-list">Matches</a>
   <a class="nav-item" href="/league-table">Table</a>
 </nav>
+
+<!-- if user is signed in show this -->
+<div sec:authorize="isAuthenticated()">
+  <p class="login-status">Logged in as: <span sec:authentication="name"></span></p>
+  <form th:action="@{/logout}" method="post">
+    <input type="hidden" name="_csrf" value="WfK-AdqXq0N7MEGw7mTbjUMslGFC5cGqU0izPjo4YwYgFRBbPJCKZbiuzXFWCXSC2Unv7HBIuQB01_GHYiuCDwxdWjFEJyJi"/>
+    <input type="submit" value="Sign out">
+  </form>
+</div>
+
+<!-- if not show this -->
+<div sec:authorize="isAnonymous()">
+  <!-- Content to show if user is not signed in -->
+  <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
+</div>
+
 <h2><span th:text="${ team.name }"></span> players:</h2>
 <ul th:each="player : ${ players }">
   <li th:text="${ player.number + ' ' + player.firstName + ' ' + player.lastName }"></li>
