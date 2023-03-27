@@ -33,7 +33,7 @@
     <div class="match-list">
         <!-- iterate Map<LocalDate, List<Match>> to show matches grouped by date-->
         <div class="matches-of-date" th:each="matches : ${ matchesByDate }">
-            <h3 th:text="${matches.key}"></h3>
+            <h3 th:text="${matches.key} != null ? ${matches.key} : 'Not yet scheduled'"></h3>
             <!-- and then inside that we iterate the List<Match> to show all matches of that date -->
             <div class="scorecard" th:each="match : ${ matches.value }">
                 <span class="team-name" th:text="${match.homeTeam.name}">Home Team</span>

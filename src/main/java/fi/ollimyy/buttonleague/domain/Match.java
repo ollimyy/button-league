@@ -14,6 +14,7 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    // null datetime is used to indicate that it is an upcoming match that has not been scheduled yet
     private LocalDateTime startDateTime;
 
     @ManyToOne
@@ -25,6 +26,7 @@ public class Match {
     @Formula("(select team_id from match_team where match_id = id and is_home_team = true)")
     private Team awayTeam;
 
+    // null score is used to indicate that the match has not started or that the score has not been recorded
     private Integer homeScore;
 
     private Integer awayScore;
