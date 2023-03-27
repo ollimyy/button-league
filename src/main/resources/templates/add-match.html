@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" th:src="@{/js/add-match-script.js}"></script>
+  <title>Button League</title>
+</head>
+<body>
+  <h1>Button League</h1>
+  <nav>
+    <a class="nav-item" href="/match-list">Matches</a>
+    <a class="nav-item" href="/league-table">Table</a>
+  </nav>
+
+  <div sec:authorize="isAuthenticated()">
+    <p class="login-status">Logged in as: <span sec:authentication="name"></span></p>
+    <form th:action="@{/logout}" method="post">
+      <input type="hidden" name="_csrf" value="WfK-AdqXq0N7MEGw7mTbjUMslGFC5cGqU0izPjo4YwYgFRBbPJCKZbiuzXFWCXSC2Unv7HBIuQB01_GHYiuCDwxdWjFEJyJi"/>
+      <input type="submit" value="Sign out">
+    </form>
+  </div>
+
+  <h2>Add a new match:</h2>
+  <form th:object="${match}" th:action="@{/save-match}" action="#" method="post">
+
+    <label for="homeTeam">Home team:</label>
+    <select id="homeTeam" required th:field="${match.homeTeam}">
+      <!-- by default show empty field on the select-->
+      <option value="" style="display: none;"></option>
+      <option th:each=" team : ${ teams }" th:value="${team.id}" th:text="${team.name}"></option>
+    </select>
+    <br />
+    <label for="awayTeam">Away team:</label>
+    <select id="awayTeam" required th:field="${match.awayTeam}">
+      <option value="" style="display: none;"></option>
+      <option th:each=" team : ${ teams }" th:value="${team.id}" th:text="${team.name}"></option>
+    </select>
+    <br />
+    <label for="dateTime">Date and time (optional):</label>
+    <input type="datetime-local" id="dateTime" th:field="${match.startDateTime}"/>
+    <br />
+    <input type="submit" value="Save" />
+  </form>
+</body>
+</html>

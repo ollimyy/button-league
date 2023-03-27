@@ -27,6 +27,9 @@
     </div>
 
     <h2>Matches:</h2>
+    <div sec:authorize="hasAuthority('admin')">
+        <a href="/add-match"><button type="button" class="add-button">Add a match</button></a>
+    </div>
     <div class="match-list">
         <!-- iterate Map<LocalDate, List<Match>> to show matches grouped by date-->
         <div class="matches-of-date" th:each="matches : ${ matchesByDate }">
