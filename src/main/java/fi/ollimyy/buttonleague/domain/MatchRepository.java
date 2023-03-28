@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface MatchRepository extends CrudRepository<Match, Long> {
 
-    @Query("SELECT m FROM Match m ORDER BY m.startDateTime ASC")
-    List<Match> findAllMatchesSortedByStartDate();
+    @Query("SELECT m FROM Match m ORDER BY m.date ASC, m.time ASC")
+    List<Match> findAllMatchesSortedByStartDateAndTime();
 
     // NULL score means the match has not been played yet
     @Query("SELECT m FROM Match m WHERE ((m.homeTeam = :team OR m.awayTeam = :team) AND m.awayScore IS NOT NULL AND m.homeScore IS NOT NULL)")

@@ -15,28 +15,22 @@ public class MatchService {
     private MatchRepository matchRepository;
 
     public Map<LocalDate, List<Match>> getMatchesGroupedByDate() {
-        List<Match> matches = matchRepository.findAllMatchesSortedByStartDate();
+        List<Match> matches = matchRepository.findAllMatchesSortedByStartDateAndTime();
         // with a LinkedHashMap the match groups stay sorted by date
         Map<LocalDate, List<Match>> matchesGroupedByDate = new LinkedHashMap<>();
 
         for (Match match : matches) {
+            LocalDate date = match.getDate();
 
-            // matches have startDateTime, we need Date for grouping
-            LocalDate startDate = null;
-
-            // if the match has a start date convert it to LocalDate
-            if (match.getStartDateTime() != null) {
-                startDate = match.getStartDateTime().toLocalDate();
+            // if no matches list for this date create one
+            if(!matchesGroupedByDate.containsKey(date)) {
+                matchesGroupedByDate.put(date, new ArrayList<>());
             }
 
-            // if there is no list for this start date create one
-            if (!matchesGroupedByDate.containsKey(startDate)) {
-                matchesGroupedByDate.put(startDate, new ArrayList<>());
-            }
-
-            // add the match to a list matching its start date
-            matchesGroupedByDate.get(startDate).add(match);
+            // add the match to the list matching its date
+            matchesGroupedByDate.get(date).add(match);
         }
+
         return matchesGroupedByDate;
     }
 }

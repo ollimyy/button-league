@@ -37,8 +37,11 @@
       <option th:each=" team : ${ teams }" th:value="${team.id}" th:text="${team.name}"></option>
     </select>
     <br />
-    <label for="dateTime">Date and time (optional):</label>
-    <input type="datetime-local" id="dateTime" th:field="${match.startDateTime}"/>
+    <label for="date">Date (optional):</label>
+    <input type="date" id="date" th:field="${match.date}"/>
+    <br />
+    <label for="time">Time (optional):</label>
+    <input type="time" id="time" th:field="${match.time}"/>
     <br />
     <input type="submit" value="Save" />
   </form>

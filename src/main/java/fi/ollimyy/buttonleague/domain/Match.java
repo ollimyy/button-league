@@ -1,9 +1,10 @@
 package fi.ollimyy.buttonleague.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Formula;
+import jakarta.validation.constraints.AssertTrue;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,11 +12,14 @@ import java.util.Set;
 public class Match {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // null datetime is used to indicate that it is an upcoming match that has not been scheduled yet
-    private LocalDateTime startDateTime;
+    // null date is used to indicate that it is an upcoming match that has not been scheduled yet
+    private LocalDate date;
+
+    // null time can be used if the match doesn't (yet) have a specified start time
+    private LocalTime time;
 
     @ManyToOne
     @JoinColumn (name = "home_team_id")
@@ -23,7 +27,6 @@ public class Match {
 
     @ManyToOne
     @JoinColumn (name = "away_team_id")
-    @Formula("(select team_id from match_team where match_id = id and is_home_team = true)")
     private Team awayTeam;
 
     // null score is used to indicate that the match has not started or that the score has not been recorded
@@ -39,16 +42,24 @@ public class Match {
     )
     private Set<Team> teams = new HashSet<>();
 
+    // if date is null time must be null
+   // @AssertTrue
+    //private boolean isDateAndTimeValid() {
+   //     return date != null || time == null;
+    //}
+
     //constructors
     public Match() {
     }
 
-    public Match(Long id, Team homeTeam, Team awayTeam, Integer homeScore, Integer awayScore) {
-        this.id = id;
+    public Match(LocalDate date, LocalTime time, Team homeTeam, Team awayTeam, Integer homeScore, Integer awayScore, Set<Team> teams) {
+        this.date = date;
+        this.time = time;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeScore = homeScore;
         this.awayScore = awayScore;
+        this.teams = teams;
     }
 
     //getters setters
@@ -60,12 +71,20 @@ public class Match {
         this.id = matchId;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Team getHomeTeam() {
@@ -100,14 +119,25 @@ public class Match {
         this.awayScore = awayTeamScore;
     }
 
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
-                "matchId=" + id +
+                "id=" + id +
+                ", date=" + date +
+                ", time=" + time +
                 ", homeTeam=" + homeTeam +
                 ", awayTeam=" + awayTeam +
-                ", homeTeamScore=" + homeScore +
-                ", awayTeamScore=" + awayScore +
+                ", homeScore=" + homeScore +
+                ", awayScore=" + awayScore +
+                ", teams=" + teams +
                 '}';
     }
 }
