@@ -2,6 +2,7 @@ package fi.ollimyy.buttonleague.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,7 +13,8 @@ import java.util.Set;
 public class Match {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+
     private Long id;
 
     // null date is used to indicate that it is an upcoming match that has not been scheduled yet
