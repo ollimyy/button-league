@@ -40,9 +40,9 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     // returns positive value if team1 won more head-to-head games, negative if team2, and 0 if equal amount
     @Query("SELECT " +
             //wins by team 1
-            "SUM(CASE WHEN m.homeTeam = :team1 AND m.homeScore > m.awayScore OR m.awayTeam = :team1 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END) -" +
+            "COALESCE(SUM(CASE WHEN m.homeTeam = :team1 AND m.homeScore > m.awayScore OR m.awayTeam = :team1 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END), 0) -" +
             // - wins by team 2
-            "SUM(CASE WHEN m.homeTeam = :team2 AND m.homeScore > m.awayScore OR m.awayTeam = :team2 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END)" +
+            "COALESCE(SUM(CASE WHEN m.homeTeam = :team2 AND m.homeScore > m.awayScore OR m.awayTeam = :team2 AND m.awayScore > m.homeScore THEN 1 ELSE 0 END), 0)" +
             "FROM Match m " +
             //from head-to-head matches
             "WHERE (m.homeTeam = :team1 AND m.awayTeam = :team2) OR (m.homeTeam = :team2 AND m.awayTeam = :team1)")
@@ -51,9 +51,9 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     // returns positive value if team1 scored more away goals in head-to-head games, negative if team2, and 0 if equal amount
     @Query("SELECT " +
             //away goals by team 1
-            "SUM(CASE WHEN m.awayTeam = :team1 THEN m.awayScore ELSE 0 END) -" +
+            "COALESCE(SUM(CASE WHEN m.awayTeam = :team1 THEN m.awayScore ELSE 0 END), 0) -" +
             // - away goals by team 2
-            "SUM(CASE WHEN m.awayTeam = :team2 THEN m.awayScore ELSE 0 END)" +
+            "COALESCE(SUM(CASE WHEN m.awayTeam = :team2 THEN m.awayScore ELSE 0 END), 0)" +
             "FROM Match m " +
             //from head-to-head matches
             "WHERE (m.homeTeam = :team1 AND m.awayTeam = :team2) OR (m.homeTeam = :team2 AND m.awayTeam = :team1)")
