@@ -1,0 +1,17 @@
+.scorecard {
+    display: flex;
+    align-items: center;
+    max-width: 200px;
+}
+
+.match-time {
+    margin-right: 20px;
+}
+
+.teams {
+    flex-grow: 1;
+}
+
+.scores {
+    margin-left: 20px;
+}
