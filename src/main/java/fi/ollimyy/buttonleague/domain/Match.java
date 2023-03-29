@@ -45,10 +45,10 @@ public class Match {
     private Set<Team> teams = new HashSet<>();
 
     // if date is null time must be null
-   // @AssertTrue
-    //private boolean isDateAndTimeValid() {
-   //     return date != null || time == null;
-    //}
+    @AssertTrue
+    private boolean isDateAndTimeValid() {
+        return date != null || time == null;
+    }
 
     //constructors
     public Match() {
