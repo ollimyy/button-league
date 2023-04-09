@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button League</title>
+</head>
+<body>
+<h1>Button League</h1>
+<nav>
+  <a class="nav-item" href="/match-list">Matches</a>
+  <a class="nav-item" href="/league-table">Table</a>
+  <a class="nav-item" href="/team-list">Teams</a>
+</nav>
+
+<!-- if user is signed in show this -->
+<div sec:authorize="isAuthenticated()">
+  <p class="login-status">Logged in as: <span sec:authentication="name"></span></p>
+  <form th:action="@{/logout}" method="post">
+    <input type="hidden" name="_csrf" value="WfK-AdqXq0N7MEGw7mTbjUMslGFC5cGqU0izPjo4YwYgFRBbPJCKZbiuzXFWCXSC2Unv7HBIuQB01_GHYiuCDwxdWjFEJyJi"/>
+    <input type="submit" value="Sign out">
+  </form>
+</div>
+
+<!-- if not show this -->
+<div sec:authorize="isAnonymous()">
+  <!-- Content to show if user is not signed in -->
+  <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
+</div>
+
+<h2>Teams:</h2>
+<ul th:each="team : ${ teams }">
+  <li><a th:href="@{/team/{teamId}/player-list(teamId=${team.id})}" th:text="${ team.name }"></a></li>
+</ul>
+</body>
+</html>

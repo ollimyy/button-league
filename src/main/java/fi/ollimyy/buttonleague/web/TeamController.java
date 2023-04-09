@@ -26,8 +26,6 @@ public class TeamController {
     @Autowired
     TeamStatsService teamStatsService;
 
-    //!!! TODO: this will give an error if team has not played any matches
-    //TODO: table needs to be sorted and position numbers displayed
     @GetMapping("/league-table")
     public String showLeagueTable(Model model) {
         Iterable<Team> teams = teamRepository.findAll();
@@ -49,5 +47,12 @@ public class TeamController {
         model.addAttribute("players", playerRepository.findPlayersByTeamId(teamId));
 
         return "player-list";
+    }
+
+    @GetMapping("/team-list")
+    public String listAllTeams(Model model) {
+        model.addAttribute("teams", teamRepository.findAll());
+
+        return "team-list";
     }
 }
