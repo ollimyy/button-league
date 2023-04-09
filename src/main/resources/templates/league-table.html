@@ -10,6 +10,7 @@
   <nav>
     <a class="nav-item" href="/match-list">Matches</a>
     <a class="nav-item" href="/league-table">Table</a>
+    <a class="nav-item" href="/team-list">Teams</a>
   </nav>
 
   <!-- if user is signed in show this -->
@@ -43,7 +44,7 @@
     <tbody>
       <tr th:each="teamStats, index : ${ teamsStats }">
         <td th:text="${ index.count }"></td>
-        <td><a th:href="@{/team/{teamId}/player-list(teamId=${teamStats.team.id})}" th:text="${ teamStats.team.name }"></a></td>
+        <td><a th:href="@{/team/{teamId}/(teamId=${teamStats.team.id})}" th:text="${ teamStats.team.name }"></a></td>
         <td th:text="${ teamStats.matchesPlayed }"></td>
         <td th:text="${ teamStats.wins }">#</td>
         <td th:text="${ teamStats.draws }">#</td>

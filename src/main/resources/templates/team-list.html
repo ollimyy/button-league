@@ -30,7 +30,7 @@
 
 <h2>Teams:</h2>
 <ul th:each="team : ${ teams }">
-  <li><a th:href="@{/team/{teamId}/player-list(teamId=${team.id})}" th:text="${ team.name }"></a></li>
+  <li><a th:href="@{/team/{teamId}/(teamId=${team.id})}" th:text="${ team.name }"></a></li>
 </ul>
 </body>
 </html>

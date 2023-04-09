@@ -1,5 +1,6 @@
 package fi.ollimyy.buttonleague.web;
 
+import fi.ollimyy.buttonleague.domain.Player;
 import fi.ollimyy.buttonleague.domain.PlayerRepository;
 import fi.ollimyy.buttonleague.domain.Team;
 import fi.ollimyy.buttonleague.domain.TeamRepository;
@@ -41,12 +42,12 @@ public class TeamController {
         return "league-table";
     }
 
-    @GetMapping("/team/{teamId}/player-list")
+    @GetMapping("/team/{teamId}/")
     public String listAllPlayersByTeam(@PathVariable Long teamId, Model model) {
         model.addAttribute("team", teamRepository.findById(teamId).get()); //TODO: handle team not found
         model.addAttribute("players", playerRepository.findPlayersByTeamId(teamId));
 
-        return "player-list";
+        return "team-page";
     }
 
     @GetMapping("/team-list")

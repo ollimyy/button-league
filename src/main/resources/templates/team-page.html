@@ -28,7 +28,9 @@
   <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
 </div>
 
-<h2><span th:text="${ team.name }"></span> players:</h2>
+<h2><span th:text="${ team.name }"></span></h2>
+<h3>Players:</h3>
+
 <ul th:each="player : ${ players }">
   <li th:text="${ player.number + ' ' + player.firstName + ' ' + player.lastName }"></li>
 </ul>
