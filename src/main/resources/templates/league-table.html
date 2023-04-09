@@ -44,7 +44,7 @@
     <tbody>
       <tr th:each="teamStats, index : ${ teamsStats }">
         <td th:text="${ index.count }"></td>
-        <td><a th:href="@{/team/{teamId}/(teamId=${teamStats.team.id})}" th:text="${ teamStats.team.name }"></a></td>
+        <td><a th:href="@{/team/{teamId}(teamId=${teamStats.team.id})}" th:text="${ teamStats.team.name }"></a></td>
         <td th:text="${ teamStats.matchesPlayed }"></td>
         <td th:text="${ teamStats.wins }">#</td>
         <td th:text="${ teamStats.draws }">#</td>

@@ -1,16 +1,15 @@
 package fi.ollimyy.buttonleague.web;
 
-import fi.ollimyy.buttonleague.domain.Player;
 import fi.ollimyy.buttonleague.domain.PlayerRepository;
 import fi.ollimyy.buttonleague.domain.Team;
 import fi.ollimyy.buttonleague.domain.TeamRepository;
 import fi.ollimyy.buttonleague.model.TeamStats;
 import fi.ollimyy.buttonleague.service.TeamStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class TeamController {
         return "league-table";
     }
 
-    @GetMapping("/team/{teamId}/")
+    @GetMapping("/team/{teamId}")
     public String listAllPlayersByTeam(@PathVariable Long teamId, Model model) {
         model.addAttribute("team", teamRepository.findById(teamId).get()); //TODO: handle team not found
         model.addAttribute("players", playerRepository.findPlayersByTeamId(teamId));
@@ -53,7 +52,22 @@ public class TeamController {
     @GetMapping("/team-list")
     public String listAllTeams(Model model) {
         model.addAttribute("teams", teamRepository.findAll());
-
+        model.addAttribute("newTeam", new Team());
         return "team-list";
     }
+
+    @PostMapping("/save-team")
+    @Secured("ADMIN")
+    public String saveTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers) {
+
+        teamRepository.save(team);
+
+        if(redirectToPlayers) {
+            return "redirect:/team/" + team.getId();
+        } else {
+            return "redirect:/team-list";
+        }
+    }
+
+
 }

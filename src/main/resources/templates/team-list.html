@@ -28,9 +28,23 @@
   <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
 </div>
 
+<div sec:authorize="hasAuthority('ADMIN')">
+  <form th:object="${newTeam}" th:action="@{/save-team}" action="#" method="post">
+    <label for="name">Name:</label>
+    <input id="name" type="text" th:field="${newTeam.name}">
+    <input type="hidden" name="redirectToPlayers" th:value="${false}">
+    <button type="submit" >Save</button>
+    <button
+            type="submit"
+            name="redirectToPlayers"
+            onclick="document.getElementsByName('redirectToPlayers')[0].value = true;"
+            >Save and add players</button>
+  </form>
+</div>
+
 <h2>Teams:</h2>
 <ul th:each="team : ${ teams }">
-  <li><a th:href="@{/team/{teamId}/(teamId=${team.id})}" th:text="${ team.name }"></a></li>
+  <li><a th:href="@{/team/{teamId}(teamId=${team.id})}" th:text="${ team.name }"></a></li>
 </ul>
 </body>
 </html>
