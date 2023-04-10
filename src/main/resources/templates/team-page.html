@@ -32,6 +32,9 @@
 <h2 id="team-name"><span th:text="${ team.name }"></span></h2>
 <div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')" >
   <button id="edit-team-name-button" type="button">Edit name</button>
+  <!-- this is for passing the team id to the js file -->
+  <input id="team-id" type="hidden" th:value="${team.id}">
+  <button id="delete-team-button" class="delete-button" type="button">Delete team</button>
   <div class="error-message" th:if="${errorMessage}">
     <p th:text="${errorMessage}"></p>
   </div>

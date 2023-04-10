@@ -16,10 +16,10 @@ public class Team {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "teams")
+    @ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)
     private Set<Match> matches = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     List<Player> players;
 
     //constructors

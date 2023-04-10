@@ -51,7 +51,6 @@
 <ul th:each="team : ${ teams }">
   <li>
     <a th:href="@{/team/{teamId}(teamId=${team.id})}" th:text="${ team.name }"></a>
-    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/delete-team/{teamId}(teamId=${team.id})}">Delete</a>
   </li>
 </ul>
 </body>
