@@ -35,7 +35,7 @@ public class MatchController {
     }
 
     @GetMapping("/add-match")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String addMatch(Model model) {
         model.addAttribute("match", new Match());
         model.addAttribute("teams", teamRepository.findAll());
