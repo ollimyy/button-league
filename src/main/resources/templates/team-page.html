@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" th:src="@{/js/team-page-script.js}"></script>
   <title>Button League</title>
 </head>
 <body>
@@ -28,7 +29,17 @@
   <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
 </div>
 
-<h2><span th:text="${ team.name }"></span></h2>
+<h2 id="team-name"><span th:text="${ team.name }"></span></h2>
+<div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')" >
+  <button id="edit-team-name-button" type="button">Edit name</button>
+  <form  id="team-name-form" th:object="${ team }" th:action="@{/save-team}" style="display: none;">
+    <label for="id"></label>
+    <input type="hidden" id="id" th:field="${team.id}" readonly="readonly" />
+    <label for="name"></label>
+    <input type="text" th:field="${team.name}" id="name">
+    <input type="submit" value="Save">
+  </form>
+</div>
 <h3>Players:</h3>
 
 <ul th:each="player : ${ players }">

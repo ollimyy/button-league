@@ -30,7 +30,7 @@
 
 <!-- add new team form for admins -->
 <div sec:authorize="hasAuthority('ADMIN')">
-  <form th:object="${newTeam}" th:action="@{/save-team}" action="#" method="post">
+  <form th:object="${newTeam}" th:action="@{/add-team}" action="#" method="post">
     <label for="name">Name:</label>
     <input id="name" type="text" th:field="${newTeam.name}">
     <input type="hidden" name="redirectToPlayers" th:value="${false}">

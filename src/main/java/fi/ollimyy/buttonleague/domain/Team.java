@@ -13,6 +13,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "teams")

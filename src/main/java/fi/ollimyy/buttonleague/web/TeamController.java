@@ -56,9 +56,9 @@ public class TeamController {
         return "team-list";
     }
 
-    @PostMapping("/save-team")
+    @PostMapping("/add-team")
     @Secured("ADMIN")
-    public String saveTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers) {
+    public String addNewTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers) {
 
         teamRepository.save(team);
 
@@ -76,6 +76,14 @@ public class TeamController {
         teamRepository.deleteById(teamId);
 
         return "redirect:/team-list";
+    }
+
+    @GetMapping("/save-team")
+    @Secured("ADMIN")
+    public String saveTeam(Team team) {
+        teamRepository.save(team);
+
+        return "redirect:/team/" + team.getId();
     }
 
 
