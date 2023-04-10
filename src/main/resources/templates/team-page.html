@@ -32,6 +32,9 @@
 <h2 id="team-name"><span th:text="${ team.name }"></span></h2>
 <div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')" >
   <button id="edit-team-name-button" type="button">Edit name</button>
+  <div class="error-message" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+  </div>
   <form  id="team-name-form" th:object="${ team }" th:action="@{/save-team}" style="display: none;">
     <label for="id"></label>
     <input type="hidden" id="id" th:field="${team.id}" readonly="readonly" />

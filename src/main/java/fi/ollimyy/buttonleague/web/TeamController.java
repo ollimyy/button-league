@@ -5,7 +5,9 @@ import fi.ollimyy.buttonleague.domain.Team;
 import fi.ollimyy.buttonleague.domain.TeamRepository;
 import fi.ollimyy.buttonleague.model.TeamStats;
 import fi.ollimyy.buttonleague.service.TeamStatsService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,26 +44,35 @@ public class TeamController {
     }
 
     @GetMapping("/team/{teamId}")
-    public String listAllPlayersByTeam(@PathVariable Long teamId, Model model) {
+    public String listAllPlayersByTeam(@PathVariable Long teamId, Model model, HttpSession session) {
         model.addAttribute("team", teamRepository.findById(teamId).get()); //TODO: handle team not found
         model.addAttribute("players", playerRepository.findPlayersByTeamId(teamId));
+        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
+        session.removeAttribute("errorMessage");
 
         return "team-page";
     }
 
     @GetMapping("/team-list")
-    public String listAllTeams(Model model) {
+    public String listAllTeams(Model model, HttpSession session) {
         model.addAttribute("teams", teamRepository.findAll());
         model.addAttribute("newTeam", new Team());
+        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
+        session.removeAttribute("errorMessage");
+
         return "team-list";
     }
 
     @PostMapping("/add-team")
     @Secured("ADMIN")
-    public String addNewTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers) {
+    public String addNewTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers, HttpSession session) {
 
-        teamRepository.save(team);
-
+        try {
+            teamRepository.save(team);
+        } catch (DataIntegrityViolationException e) {
+            session.setAttribute("errorMessage", "Team name already exists.");
+            return "redirect:/team-list";
+        }
         if(redirectToPlayers) {
             return "redirect:/team/" + team.getId();
         } else {
@@ -80,9 +91,14 @@ public class TeamController {
 
     @GetMapping("/save-team")
     @Secured("ADMIN")
-    public String saveTeam(Team team) {
-        teamRepository.save(team);
+    public String saveTeam(Team team, HttpSession session) {
 
+       try {
+           teamRepository.save(team);
+       } catch (DataIntegrityViolationException e) {
+           session.setAttribute("errorMessage", "Team name already exists.");
+           return "redirect:/team/" + team.getId();
+       }
         return "redirect:/team/" + team.getId();
     }
 

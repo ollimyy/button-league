@@ -41,6 +41,9 @@
             onclick="document.getElementsByName('redirectToPlayers')[0].value = true;"
             >Save and add players</button>
   </form>
+  <div class="error-message" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+  </div>
 </div>
 
 <!-- show all teams as a list -->
