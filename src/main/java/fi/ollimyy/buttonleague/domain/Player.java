@@ -3,20 +3,26 @@ package fi.ollimyy.buttonleague.domain;
 import jakarta.persistence.*;
 
 @Entity
+// number is unique within a team, no players with the same number in the same team
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"number", "team_id"}))
 public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @Column(nullable = false)
     String firstName;
 
+    @Column(nullable = false)
     String lastName;
 
+    @Column(nullable = false)
     int number;
 
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "team_id")
     Team team;
     public Player() {
     }

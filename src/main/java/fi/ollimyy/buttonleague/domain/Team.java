@@ -16,12 +16,16 @@ public class Team {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "teams")
     private Set<Match> matches = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     List<Player> players;
 
+    @PreRemove
+    private void removeMatchesAndPlayers() {
+
+    }
     //constructors
     public Team() {
     }

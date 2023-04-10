@@ -30,14 +30,9 @@
 </div>
 
 <h2 id="team-name"><span th:text="${ team.name }"></span></h2>
-<div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')" >
+<div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')">
   <button id="edit-team-name-button" type="button">Edit name</button>
   <!-- this is for passing the team id to the js file -->
-  <input id="team-id" type="hidden" th:value="${team.id}">
-  <button id="delete-team-button" class="delete-button" type="button">Delete team</button>
-  <div class="error-message" th:if="${errorMessage}">
-    <p th:text="${errorMessage}"></p>
-  </div>
   <form  id="team-name-form" th:object="${ team }" th:action="@{/save-team}" style="display: none;">
     <label for="id"></label>
     <input type="hidden" id="id" th:field="${team.id}" readonly="readonly" />
@@ -45,11 +40,48 @@
     <input type="text" th:field="${team.name}" id="name">
     <input type="submit" value="Save">
   </form>
+
+  <input id="team-id" type="hidden" th:value="${team.id}">
+  <button id="delete-team-button" class="delete-button" type="button">Delete team</button>
+  <div class="error-message" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
 </div>
 <h3>Players:</h3>
 
-<ul th:each="player : ${ players }">
-  <li th:text="${ player.number + ' ' + player.firstName + ' ' + player.lastName }"></li>
-</ul>
+<div sec:authorize="hasAuthority('ADMIN')" id="add-player-form">
+  <h4 >Add new player to <span th:text="${team.name}"></span></h4>
+  <form  th:object="${newPlayer}" th:action="@{/save-player}" method="post" action="#">
+    <label for="firstName">First name:</label>
+    <input id="firstName" th:field="${newPlayer.firstName}" required>
+    <label for="lastName">Last name:</label>
+    <input id="lastName" th:field="${newPlayer.lastName}" required>
+    <label for="number">Number:</label>
+    <select id="number" th:field="${newPlayer.number}">
+      <option th:each="number : ${availableNumbers}" th:value="${number}" th:text="${number}"></option>
+    </select>
+    <input type="hidden" th:field="${newPlayer.team.id}">
+    <input type="submit" value="Save">
+  </form>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Number</th>
+    <th>Name</th>
+    <!-- columns edit and delete buttons -->
+    <th sec:authorize="hasAuthority('ADMIN')"></th>
+    <th sec:authorize="hasAuthority('ADMIN')"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="player : ${players}">
+    <td th:text="${player.number}"></td>
+    <td th:text="${player.firstName + ' ' + player.lastName}"></td>
+  </tr>
+  </tbody>
+</table>
 </body>
 </html>

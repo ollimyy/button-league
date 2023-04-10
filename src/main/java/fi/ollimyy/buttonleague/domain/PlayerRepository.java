@@ -11,5 +11,10 @@ import java.util.List;
 public interface PlayerRepository extends CrudRepository<Player, Long> {
 
     @Query("SELECT p FROM Player p WHERE p.team.id = :teamId")
-    public List<Player> findPlayersByTeamId(@Param("teamId") Long team);
+    List<Player> findPlayersByTeamId(@Param("teamId") Long team);
+
+    @Query("SELECT p.number FROM Player p WHERE p.team = :team")
+    List<Integer> findNumbersUsedInTeam(@Param("team") Team team);
+
+
 }
