@@ -70,4 +70,13 @@ public class TeamController {
     }
 
 
+    @GetMapping("/delete-team/{teamId}")
+    @Secured("ADMIN")
+    public String deleteTeam(@PathVariable("teamId") Long teamId) {
+        teamRepository.deleteById(teamId);
+
+        return "redirect:/team-list";
+    }
+
+
 }

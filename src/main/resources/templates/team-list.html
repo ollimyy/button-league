@@ -28,6 +28,7 @@
   <a href="/login"><button type="button" class="sign-in">Sign in</button></a>
 </div>
 
+<!-- add new team form for admins -->
 <div sec:authorize="hasAuthority('ADMIN')">
   <form th:object="${newTeam}" th:action="@{/save-team}" action="#" method="post">
     <label for="name">Name:</label>
@@ -42,9 +43,13 @@
   </form>
 </div>
 
+<!-- show all teams as a list -->
 <h2>Teams:</h2>
 <ul th:each="team : ${ teams }">
-  <li><a th:href="@{/team/{teamId}(teamId=${team.id})}" th:text="${ team.name }"></a></li>
+  <li>
+    <a th:href="@{/team/{teamId}(teamId=${team.id})}" th:text="${ team.name }"></a>
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/delete-team/{teamId}(teamId=${team.id})}">Delete</a>
+  </li>
 </ul>
 </body>
 </html>
