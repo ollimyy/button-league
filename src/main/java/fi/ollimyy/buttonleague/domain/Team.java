@@ -22,10 +22,6 @@ public class Team {
     @OneToMany
     List<Player> players;
 
-    @PreRemove
-    private void removeMatchesAndPlayers() {
-
-    }
     //constructors
     public Team() {
     }
