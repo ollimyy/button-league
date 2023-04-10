@@ -120,7 +120,7 @@ public class TeamController {
             playerRepository.deleteAll(players);
 
             // Delete all matches where the team is either the home team or away team
-            List<Match> matches = matchRepository.findMatchesPlayedByTeam(team);
+            List<Match> matches = matchRepository.findAllMatchesByTeam(team);
             matchRepository.deleteAll(matches);
 
             teamRepository.deleteById(teamId);

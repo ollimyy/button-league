@@ -13,6 +13,9 @@ public interface MatchRepository extends CrudRepository<Match, Long> {
     @Query("SELECT m FROM Match m ORDER BY m.date ASC, m.time ASC")
     List<Match> findAllMatchesSortedByStartDateAndTime();
 
+    @Query("SELECT m FROM Match m WHERE (m.homeTeam = :team OR m.awayTeam = :team)")
+    List<Match> findAllMatchesByTeam(@Param("team") Team team);
+
     // NULL score means the match has not been played yet
     @Query("SELECT m FROM Match m WHERE ((m.homeTeam = :team OR m.awayTeam = :team) AND m.awayScore IS NOT NULL AND m.homeScore IS NOT NULL)")
     List<Match> findMatchesPlayedByTeam(@Param("team") Team team);
