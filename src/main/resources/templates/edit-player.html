@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" th:src="@{/js/add-match-script.js}"></script>
+  <title>Button League</title>
+</head>
+<body>
+<h1>Button League</h1>
+<nav>
+  <a class="nav-item" href="/match-list">Matches</a>
+  <a class="nav-item" href="/league-table">Table</a>
+  <a class="nav-item" href="/team-list">Teams</a>
+</nav>
+
+<h2>Edit player:</h2>
+<form th:object="${player}" method="post" th:action="@{/save-player}" action="#">
+  <input type="hidden" th:field="${player.id}">
+  <label for="firstName">First name:</label>
+  <input id="firstName" th:field="${player.firstName}" required>
+  <label for="lastName">Last Name:</label>
+  <input id="lastName" th:field="${player.lastName}" required>
+  <label for="team">Team:</label>
+  <select id="team" th:field="${player.team}">
+    <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+  </select>
+  <label for="number">Number:</label>
+  <select id="number" th:field="${player.number}" required>
+    <option th:each="number : ${availableNumbers}" th:value="${number}" th:text="${number}"></option>
+  </select>
+  <input type="submit" value="Save">
+</form>
+</body>
+</html>

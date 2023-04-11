@@ -70,6 +70,10 @@ public class TeamController {
             model.addAttribute("newPlayer", newPlayer); //for adding new players to the team
             model.addAttribute("availableNumbers", playerService.getAvailablePlayerNumbersInTeam(team));
 
+            // for editing a player
+            model.addAttribute("editPlayer", newPlayer);
+
+            //error message
             model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
             session.removeAttribute("errorMessage"); // remove error message from session so when user refreshes page it won't show again
 
