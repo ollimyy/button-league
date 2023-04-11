@@ -42,7 +42,9 @@
   </form>
 
   <input id="team-id" type="hidden" th:value="${team.id}">
-  <button id="delete-team-button" class="delete-button" type="button">Delete team</button>
+  <a sec:authorize="hasAuthority('ADMIN')" class="delete-button" th:href="@{/delete-team/{teamId}(teamId=${team.id})}"
+          onclick="return confirm('Deleting this team will delete all it\'s players and all played and upcoming matches the team is in. ' +
+           '\n\nAre you sure you want to delete this team AND all it\'s players and matches?')">Delete team</a>
   <div class="error-message" th:if="${errorMessage}">
     <p th:text="${errorMessage}"></p>
   </div>
@@ -80,7 +82,7 @@
   <tr th:each="player : ${players}">
     <td th:text="${player.number}"></td>
     <td th:text="${player.firstName + ' ' + player.lastName}"></td>
-    <td><a sec:authorize="hasAuthority('ADMIN')" th:href="@{/delete-player/{playerId}(playerId=${player.id})}" onclick="return confirm('Are you sure you want to delete this player?')">Delete</a></td>
+    <td><a sec:authorize="hasAuthority('ADMIN')" class="delete-button" th:href="@{/delete-player/{playerId}(playerId=${player.id})}" onclick="return confirm('Are you sure you want to delete this player?')">Delete</a></td>
   </tr>
   </tbody>
 </table>
