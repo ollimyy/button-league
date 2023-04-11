@@ -80,6 +80,7 @@
   <tr th:each="player : ${players}">
     <td th:text="${player.number}"></td>
     <td th:text="${player.firstName + ' ' + player.lastName}"></td>
+    <td><a sec:authorize="hasAuthority('ADMIN')" th:href="@{/delete-player/{playerId}(playerId=${player.id})}" onclick="return confirm('Are you sure you want to delete this player?')">Delete</a></td>
   </tr>
   </tbody>
 </table>
