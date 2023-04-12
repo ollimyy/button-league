@@ -2,17 +2,16 @@ package fi.ollimyy.buttonleague.web;
 
 import fi.ollimyy.buttonleague.domain.Player;
 import fi.ollimyy.buttonleague.domain.PlayerRepository;
+import fi.ollimyy.buttonleague.domain.Team;
 import fi.ollimyy.buttonleague.domain.TeamRepository;
 import fi.ollimyy.buttonleague.service.PlayerService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +70,15 @@ public class PlayerController {
 
             return "edit-player";
         }
+    }
 
-
+    @GetMapping("/get-available-numbers")
+    public ResponseEntity<List<Integer>> getAvailableNumbersByTeam(@RequestParam("teamId") Long teamId) {
+        Optional<Team> teamOptional = teamRepository.findById(teamId);
+        if(teamOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(playerService.getAvailablePlayerNumbersInTeam(teamOptional.get()));
+        }
     }
 }
