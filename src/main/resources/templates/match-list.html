@@ -29,7 +29,7 @@
     </div>
 
     <h2>Matches:</h2>
-    <div sec:authorize="hasAuthority('admin')">
+    <div sec:authorize="hasAuthority('ADMIN')">
         <a href="/add-match"><button type="button" class="add-button">Add a match</button></a>
     </div>
     <div class="match-list">
@@ -37,17 +37,20 @@
         <div class="matches-of-date" th:each="matches : ${ matchesByDate }">
             <h3 th:text="${matches.key} != null ? ${matches.key} : 'Not yet scheduled'"></h3>
             <!-- and then inside that we iterate the List<Match> to show all matches of that date -->
-            <div class="scorecard" th:each="match : ${ matches.value }">
-                <div class="match-time" th:text="${match.time} != null ? ${match.time} : 'TBA'">##:##</div>
-                <div class="teams">
-                    <p th:text="${match.homeTeam.name}">Home team</p>
-                    <p th:text="${match.awayTeam.name}">Away Team: [Insert Away Team Name Here]</p>
+            <th:block th:each="match : ${ matches.value }">
+                <div class="scorecard">
+                    <div class="match-time" th:text="${match.time} != null ? ${match.time} : 'TBA'">##:##</div>
+                    <div class="teams">
+                        <a th:href="@{/team/{teamId}(teamId=${match.homeTeam.id})}" th:text="${match.homeTeam.name}">Home team</a>
+                        <a th:href="@{/team/{teamId}(teamId=${match.awayTeam.id})}" th:text="${match.awayTeam.name}">Away Team: [Insert Away Team Name Here]</a>
+                    </div>
+                    <div class="scores">
+                        <p th:text="${match.homeScore}">#</p>
+                        <p th:text="${match.awayScore}">#</p>
+                    </div>
                 </div>
-                <div class="scores">
-                    <p th:text="${match.homeScore}">#</p>
-                    <p th:text="${match.awayScore}">#</p>
-                </div>
-            </div>
+
+            </th:block>
         </div>
     </div>
 </body>
