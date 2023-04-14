@@ -2,7 +2,7 @@ package fi.ollimyy.buttonleague.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,21 +14,22 @@ public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-
     private Long id;
 
     // null date is used to indicate that it is an upcoming match that has not been scheduled yet
+    // https://stackoverflow.com/questions/38693971/input-type-date-thymeleaf
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     // null time can be used if the match doesn't (yet) have a specified start time
     private LocalTime time;
 
     @ManyToOne
-    @JoinColumn (name = "home_team_id")
+    @JoinColumn (name = "home_team_id", nullable = false)
     private Team homeTeam;
 
     @ManyToOne
-    @JoinColumn (name = "away_team_id")
+    @JoinColumn (name = "away_team_id", nullable = false)
     private Team awayTeam;
 
     // null score is used to indicate that the match has not started or that the score has not been recorded

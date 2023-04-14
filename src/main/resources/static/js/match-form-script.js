@@ -1,13 +1,13 @@
 // execute js only after page has finished loading, all elements are created and available
 window.addEventListener('load', function (){
 
-    //prevent the user from selecting the same team as both home and away
-
+    // get the away and home team selects
     let homeTeamSelect = document.getElementById('homeTeam');
     let awayTeamSelect = document.getElementById('awayTeam');
 
+    //prevent the user from selecting the same team as both home and away
     //when the homeTeam value is changed
-    homeTeamSelect.addEventListener('change', function () {
+    function removeCurrentAwayTeamFromHomeTeamOptions() {
         let selectedHomeTeam = this.value;
 
 
@@ -24,11 +24,10 @@ window.addEventListener('load', function (){
                 awayTeamSelect.options[i].hidden = true;
             }
         }
-
-    })
+    }
 
     // if team is selected as away hide and disable that team from home team select
-    awayTeamSelect.addEventListener('change', function () {
+    function removeCurrentHomeTeamFromAwayTeamOptions() {
 
         let selectedAwayTeam = this.value;
         for(let i = 0; i < homeTeamSelect.options.length; i++) {
@@ -41,7 +40,40 @@ window.addEventListener('load', function (){
                 homeTeamSelect.options[i].hidden = true;
             }
         }
-    })
-})
+    }
+
+    // remove options on page load
+    removeCurrentAwayTeamFromHomeTeamOptions.call(homeTeamSelect);
+    removeCurrentHomeTeamFromAwayTeamOptions.call(awayTeamSelect);
+
+    // remove options when user changes one of the teams
+    homeTeamSelect.addEventListener('change', removeCurrentAwayTeamFromHomeTeamOptions);
+    awayTeamSelect.addEventListener('change', removeCurrentHomeTeamFromAwayTeamOptions);
+
+    // get the time label and input and the date input
+    const dateInput = document.getElementById('date');
+    const timeLabel = document.getElementById('timeLabel');
+    const timeInput = document.getElementById('time');
+
+    // hide the time input and label if date is not set
+    dateInput.addEventListener('change', function(event) {
+        const selectedDate = event.target.value;
+        if (selectedDate) {
+            timeLabel.style.display = 'inline-block';
+            timeInput.style.display = 'inline-block';
+        } else {
+            timeLabel.style.display = 'none';
+            timeInput.style.display = 'none';
+            timeInput.value = '';
+        }
+    });
+
+    // set time to empty if date is cleared
+    dateInput.addEventListener('input', function(event) {
+        if (event.target.value === '') {
+            timeInput.value = '';
+        }
+    });
+});
 
 

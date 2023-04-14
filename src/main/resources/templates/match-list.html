@@ -41,15 +41,18 @@
                 <div class="scorecard">
                     <div class="match-time" th:text="${match.time} != null ? ${match.time} : 'TBA'">##:##</div>
                     <div class="teams">
-                        <a th:href="@{/team/{teamId}(teamId=${match.homeTeam.id})}" th:text="${match.homeTeam.name}">Home team</a>
-                        <a th:href="@{/team/{teamId}(teamId=${match.awayTeam.id})}" th:text="${match.awayTeam.name}">Away Team: [Insert Away Team Name Here]</a>
+                        <p><a th:href="@{/team/{teamId}(teamId=${match.homeTeam.id})}" th:text="${match.homeTeam.name}">Home team</a></p>
+                        <p><a th:href="@{/team/{teamId}(teamId=${match.awayTeam.id})}" th:text="${match.awayTeam.name}">Away Team: [Insert Away Team Name Here]</a></p>
                     </div>
                     <div class="scores">
                         <p th:text="${match.homeScore}">#</p>
                         <p th:text="${match.awayScore}">#</p>
                     </div>
                 </div>
-
+                <div class="scorecard-buttons" sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/edit-match/{matchId}(matchId=${match.id})}"><button type="button" class="edit-button">Edit</button></a>
+                    <a th:href="@{/delete-match/{matchId}(matchId=${match.id})}"><button type="button" class="delete-button">Delete</button></a>
+                </div>
             </th:block>
         </div>
     </div>

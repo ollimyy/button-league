@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="text/javascript" th:src="@{/js/add-match-script.js}"></script>
+  <script type="text/javascript" th:src="@{/js/match-form-script.js}"></script>
   <title>Button League</title>
 </head>
 <body>
@@ -25,6 +25,7 @@
   <h2>Add a new match:</h2>
   <form th:object="${match}" th:action="@{/save-match}" action="#" method="post">
 
+    <input type="hidden" th:field="${match.id}">
     <label for="homeTeam">Home team:</label>
     <select id="homeTeam" required th:field="${match.homeTeam}">
       <!-- by default show empty field on the select-->
@@ -41,8 +42,8 @@
     <label for="date">Date (optional):</label>
     <input type="date" id="date" th:field="${match.date}"/>
     <br />
-    <label for="time">Time (optional):</label>
-    <input type="time" id="time" th:field="${match.time}"/>
+    <label for="time" id="timeLabel" style="display: none">Time (optional):</label>
+    <input type="time" id="time" th:field="${match.time}" style="display: none"/>
     <br />
     <input type="submit" value="Save" />
   </form>
