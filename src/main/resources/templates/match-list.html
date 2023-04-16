@@ -39,7 +39,7 @@
             <!-- and then inside that we iterate the List<Match> to show all matches of that date -->
             <th:block th:each="match : ${ matches.value }">
                 <div class="scorecard">
-                    <div class="match-time" th:text="${match.time} != null ? ${match.time} : 'TBA'">##:##</div>
+                    <div class="match-time">##:##</div>
                     <div class="teams">
                         <p><a th:href="@{/team/{teamId}(teamId=${match.homeTeam.id})}" th:text="${match.homeTeam.name}">Home team</a></p>
                         <p><a th:href="@{/team/{teamId}(teamId=${match.awayTeam.id})}" th:text="${match.awayTeam.name}">Away Team: [Insert Away Team Name Here]</a></p>
