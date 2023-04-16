@@ -1,6 +1,8 @@
 package fi.ollimyy.buttonleague.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Team {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Enter a name for the team")
+    @Size(max = 50, message = "Team name must be no more than 50 characters")
     private String name;
 
     @ManyToMany(mappedBy = "teams")

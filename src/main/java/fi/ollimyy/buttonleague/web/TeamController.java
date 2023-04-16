@@ -5,11 +5,14 @@ import fi.ollimyy.buttonleague.model.TeamStats;
 import fi.ollimyy.buttonleague.service.PlayerService;
 import fi.ollimyy.buttonleague.service.TeamStatsService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -86,28 +89,40 @@ public class TeamController {
         model.addAttribute("teams", teamRepository.findAll());
         model.addAttribute("newTeam", new Team());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
-        session.removeAttribute("errorMessage");
+        session.removeAttribute("errorMessage"); // remove error message from session so it is only shown once
 
         return "team-list";
     }
 
     @PostMapping("/add-team")
     @Secured("ADMIN")
-    public String addNewTeam(@ModelAttribute("newTeam")Team team, @RequestParam("redirectToPlayers") boolean redirectToPlayers, HttpSession session) {
-
-        try {
-            teamRepository.save(team);
-        } catch (DataIntegrityViolationException e) {
-            session.setAttribute("errorMessage", "Team name already exists.");
+    public String addNewTeam(@Valid @ModelAttribute("newTeam") Team team, BindingResult result, @RequestParam("redirectToPlayers")
+    boolean redirectToPlayers, HttpSession session) {
+        // if team name doesn't pass the validation return to team list and tell user what's wrong
+        if(result.hasErrors()) {
+            FieldError error = result.getFieldError("name");
+            if (error != null && error.getDefaultMessage() != null) {
+                session.setAttribute("errorMessage", error.getDefaultMessage());
+            }
             return "redirect:/team-list";
-        }
-        if(redirectToPlayers) {
-            return "redirect:/team/" + team.getId();
         } else {
-            return "redirect:/team-list";
+            // non-unique team name throws a DataIntegrityViolationException, so it is handled here
+            try {
+                teamRepository.save(team);
+            } catch (DataIntegrityViolationException e) {
+                session.setAttribute("errorMessage", "Team name already exists.");
+                return "redirect:/team-list";
+            }
+
+            // if user clicked add players to team go to the team page
+            if (redirectToPlayers) {
+                return "redirect:/team/" + team.getId();
+            // if user clicked save return to team list
+            } else {
+                return "redirect:/team-list";
+            }
         }
     }
-
 
     @GetMapping("/delete-team/{teamId}")
     @Secured("ADMIN")
