@@ -94,10 +94,10 @@ public class TeamController {
         return "team-list";
     }
 
-    @PostMapping("/add-team")
+    @PostMapping("/save-team")
     @Secured("ADMIN")
-    public String addNewTeam(@Valid @ModelAttribute("newTeam") Team team, BindingResult result, @RequestParam("redirectToPlayers")
-    boolean redirectToPlayers, HttpSession session) {
+    public String addNewTeam(@Valid @ModelAttribute("newTeam") Team team, BindingResult result, @RequestParam("redirectToTeamPage") boolean redirectToTeamPage, HttpSession session) {
+
         // if team name doesn't pass the validation return to team list and tell user what's wrong
         if(result.hasErrors()) {
             FieldError error = result.getFieldError("name");
@@ -114,8 +114,8 @@ public class TeamController {
                 return "redirect:/team-list";
             }
 
-            // if user clicked add players to team go to the team page
-            if (redirectToPlayers) {
+            // if user clicked add players, or is editing a team, go to the team page
+            if (redirectToTeamPage) {
                 return "redirect:/team/" + team.getId();
             // if user clicked save return to team list
             } else {
@@ -146,19 +146,4 @@ public class TeamController {
         }
         return "redirect:/team-list";
     }
-
-    @GetMapping("/save-team")
-    @Secured("ADMIN")
-    public String saveTeam(Team team, HttpSession session) {
-
-       try {
-           teamRepository.save(team);
-       } catch (DataIntegrityViolationException e) {
-           session.setAttribute("errorMessage", "Team name already exists.");
-           return "redirect:/team/" + team.getId();
-       }
-        return "redirect:/team/" + team.getId();
-    }
-
-
 }

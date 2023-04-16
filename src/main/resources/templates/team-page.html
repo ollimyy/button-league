@@ -33,9 +33,10 @@
 <div id=team-name-edit-wrapper sec:authorize="hasAuthority('ADMIN')">
   <button id="edit-team-name-button" type="button">Edit name</button>
   <!-- this is for passing the team id to the js file -->
-  <form  id="team-name-form" th:object="${ team }" th:action="@{/save-team}" style="display: none;">
+  <form action ="#" id="team-name-form" method="post" th:object="${ team }" th:action="@{/save-team}" style="display: none;">
     <label for="id"></label>
     <input type="hidden" id="id" th:field="${team.id}" readonly="readonly" />
+    <input type="hidden" name="redirectToTeamPage" th:value="${true}" readonly="readonly"/>
     <label for="name"></label>
     <input type="text" th:field="${team.name}" id="name">
     <input type="submit" value="Save">

@@ -30,15 +30,15 @@
 
 <!-- add new team form for admins -->
 <div sec:authorize="hasAuthority('ADMIN')">
-  <form th:object="${newTeam}" th:action="@{/add-team}" action="#" method="post">
+  <form th:object="${newTeam}" th:action="@{/save-team}" action="#" method="post">
     <label for="name">Name:</label>
     <input id="name" type="text" th:field="*{name}">
-    <input type="hidden" name="redirectToPlayers" th:value="${false}">
+    <input type="hidden" name="redirectToTeamPage" th:value="${false}">
     <button type="submit" >Save</button>
     <button
             type="submit"
             name="redirectToPlayers"
-            onclick="document.getElementsByName('redirectToPlayers')[0].value = true;"
+            onclick="document.getElementsByName('redirectToTeamPage')[0].value = true;"
             >Save and add players</button>
   </form>
   <div class="error-message" th:if="${errorMessage}">
