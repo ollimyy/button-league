@@ -62,8 +62,6 @@ public class MatchController {
 
             return "match-form";
         }
-
-
     }
 
     @PostMapping("/save-match")
@@ -71,5 +69,20 @@ public class MatchController {
         matchRepository.save(match);
 
         return "redirect:match-list";
+    }
+
+    @GetMapping("/delete-match/{matchId}")
+    public String deleteMatch(@PathVariable("matchId") Long matchId, HttpSession session) {
+        Optional<Match> matchOptional = matchRepository.findById(matchId);
+
+        if(matchOptional.isEmpty()) {
+            session.setAttribute("errorMessage", "Match not found.");
+            return "redirect:/match-list";
+        } else {
+            Match match = matchOptional.get();
+
+            matchRepository.delete(match);
+            return "redirect:/match-list";
+        }
     }
 }
