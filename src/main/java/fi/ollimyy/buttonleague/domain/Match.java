@@ -2,6 +2,7 @@ package fi.ollimyy.buttonleague.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Min;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -33,8 +34,10 @@ public class Match {
     private Team awayTeam;
 
     // null score is used to indicate that the match has not started or that the score has not been recorded
+    @Min(value = 0, message = "Score cannot be negative")
     private Integer homeScore;
 
+    @Min(value = 0, message = "Score cannot be negative")
     private Integer awayScore;
 
     @ManyToMany
