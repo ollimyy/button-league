@@ -42,10 +42,10 @@
   </form>
 
   <input id="team-id" type="hidden" th:value="${team.id}">
-  <a sec:authorize="hasAuthority('ADMIN')" class="delete-link-button" th:href="@{/delete-team/{teamId}(teamId=${team.id})}"
+  <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/delete-team/{teamId}(teamId=${team.id})}"
           onclick="return confirm('Deleting this team will delete all it\'s players and all played and upcoming ' +
            'matches the team is in. \n\nAre you sure you want to delete this team AND all it\'s players and matches?')">
-    Delete team</a>
+    <button type="button" class="delete-button">Delete team</button></a>
   <div class="error-message" th:if="${errorMessage}">
     <p th:text="${errorMessage}"></p>
   </div>
@@ -83,11 +83,13 @@
     <tr th:each="player : ${players}">
       <td><span class="playerNumber" th:text="${player.number}"></span></td>
       <td><span class="playerName" th:text="${player.firstName + ' ' + player.lastName}"></span></td>
-      <td><a sec:authorize="hasAuthority('ADMIN')" class="edit-link-button"
-             th:href="@{/edit-player/{playerId}(playerId=${player.id})}">Edit</a></td>
-      <td><a sec:authorize="hasAuthority('ADMIN')" class="delete-link-button"
+      <td><a sec:authorize="hasAuthority('ADMIN')"
+             th:href="@{/edit-player/{playerId}(playerId=${player.id})}">
+        <button type="button" class="edit-button">Edit</button></a></td>
+      <td><a sec:authorize="hasAuthority('ADMIN')"
              th:href="@{/delete-player/{playerId}(playerId=${player.id})}"
-             onclick="return confirm('Are you sure you want to delete this player?')">Delete</a></td>
+             onclick="return confirm('Are you sure you want to delete this player?')">
+          <button type="button" class="delete-button">Delete</button></a></td>
     </tr>
   </tbody>
 </table>
