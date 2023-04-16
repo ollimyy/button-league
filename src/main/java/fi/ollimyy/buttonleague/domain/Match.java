@@ -51,6 +51,18 @@ public class Match {
         return date != null || time == null;
     }
 
+    // match must have a date when it was played before the score can be marked.
+    @AssertTrue
+    private boolean isDateAndScoreValid() {
+        return (homeScore == null && awayScore == null) || date != null;
+    }
+
+    //  if the match is an upcoming one both scores must be null, if the match has a result both scores must be not null
+    @AssertTrue
+    private boolean isScoresValid() {
+        return (homeScore == null && awayScore == null) || (homeScore !=null && awayScore != null);
+    }
+
     //constructors
     public Match() {
     }

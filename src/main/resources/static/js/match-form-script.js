@@ -54,27 +54,37 @@ window.addEventListener('load', function (){
     const dateInput = document.getElementById('date');
     const timeLabel = document.getElementById('timeLabel');
     const timeInput = document.getElementById('time');
+    //get score form, home and away scores
+    const scoreForm = document.getElementById('score-form');
+    const homeScore = document.getElementById('homeScore');
+    const awayScore = document.getElementById('awayScore');
 
-    // hide the time input and label if date is not set
+    // hide the time and score form if date is not set
     function showTimeIfDateIsSet(e) {
         const selectedDate = e.target.value;
         if (selectedDate) {
             timeLabel.style.display = 'inline-block';
             timeInput.style.display = 'inline-block';
+            scoreForm.style.display = 'inline-block';
         } else {
             timeLabel.style.display = 'none';
             timeInput.style.display = 'none';
+            scoreForm.style.display = 'none';
             timeInput.value = '';
+            homeScore.value = '';
+            awayScore.value = '';
         }
     }
 
     dateInput.addEventListener('change', showTimeIfDateIsSet);
     showTimeIfDateIsSet({target: dateInput});
 
-    // set time to empty if date is cleared
+    // set time and scores to empty if date is cleared
     dateInput.addEventListener('input', function(event) {
         if (event.target.value === '') {
             timeInput.value = '';
+            homeScore.value = '';
+            awayScore.value = '';
         }
     });
 });
