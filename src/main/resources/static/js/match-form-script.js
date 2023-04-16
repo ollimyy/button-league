@@ -56,8 +56,8 @@ window.addEventListener('load', function (){
     const timeInput = document.getElementById('time');
 
     // hide the time input and label if date is not set
-    dateInput.addEventListener('change', function(event) {
-        const selectedDate = event.target.value;
+    function showTimeIfDateIsSet(e) {
+        const selectedDate = e.target.value;
         if (selectedDate) {
             timeLabel.style.display = 'inline-block';
             timeInput.style.display = 'inline-block';
@@ -66,7 +66,10 @@ window.addEventListener('load', function (){
             timeInput.style.display = 'none';
             timeInput.value = '';
         }
-    });
+    }
+
+    dateInput.addEventListener('change', showTimeIfDateIsSet);
+    showTimeIfDateIsSet({target: dateInput});
 
     // set time to empty if date is cleared
     dateInput.addEventListener('input', function(event) {
