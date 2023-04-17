@@ -47,7 +47,7 @@
     <br />
     <div id="score-form" style="display: none">
       <h3>Score:</h3>
-      <p>(Leave empty if this is an upcoming match.)</p>
+      <p>(Leave both empty if this is an upcoming match.)</p>
       <label for="homeScore">Home:</label>
       <input type="number" min="0" id="homeScore" th:field="${match.homeScore}">
       <label for="awayScore">Away:</label>
@@ -56,5 +56,8 @@
     <br />
     <input type="submit" value="Save" />
   </form>
+  <div class="error-message" th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+  </div>
 </body>
 </html>

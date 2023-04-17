@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,9 @@ public class MatchController {
 
     @GetMapping("/add-match")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public String addMatch(Model model) {
+    public String addMatch(Model model, HttpSession session) {
+        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
+        session.removeAttribute("errorMessage"); // remove error message from session so it is only shown once
         model.addAttribute("match", new Match());
         model.addAttribute("teams", teamRepository.findAll());
 
@@ -57,6 +60,8 @@ public class MatchController {
         } else {
             Match match = matchOptional.get();
 
+            model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
+            session.removeAttribute("errorMessage"); // remove error message from session so it is only shown once
             model.addAttribute("match", match);
             model.addAttribute("teams", teamRepository.findAll());
 
@@ -65,10 +70,23 @@ public class MatchController {
     }
 
     @PostMapping("/save-match")
-    public String saveMatch(Match match) {
-        matchRepository.save(match);
+    public String saveMatch(Match match, HttpSession session) {
 
-        return "redirect:match-list";
+        try {
+            matchRepository.save(match);
+        } catch (TransactionSystemException e){
+            session.setAttribute("errorMessage", "If the match is upcoming leave both scores empty. " +
+                    "If the match has been played mark both scores.");
+
+            Optional<Match> matchOptional = matchRepository.findById(match.getId());
+
+            if(matchOptional.isEmpty()) {
+                return "redirect:/add-match";
+            } else {
+                return "redirect:edit-match";
+            }
+        }
+        return "redirect:/match-list";
     }
 
     @GetMapping("/delete-match/{matchId}")
