@@ -40,7 +40,7 @@
     </select>
     <br />
     <label for="date">Date (optional):</label>
-    <input type="date" id="date" th:field="${match.date}"/>
+    <input type="date" id="date" th:field="${match.date}" max='9999-12-31'/>
     <br />
     <label for="time" id="timeLabel" style="display: none">Time (optional):</label>
     <input type="time" id="time" th:field="${match.time}" style="display: none"/>

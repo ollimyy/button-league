@@ -83,7 +83,7 @@ public class MatchController {
             if(matchOptional.isEmpty()) {
                 return "redirect:/add-match";
             } else {
-                return "redirect:edit-match";
+                return "redirect:edit-match/" + matchOptional.get().getId();
             }
         }
         return "redirect:/match-list";
