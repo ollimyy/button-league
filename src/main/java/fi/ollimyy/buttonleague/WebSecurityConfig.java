@@ -21,6 +21,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
             // These lines handle H2 console specific configuration
+            // Remove for using PostgreSQL for production
             .csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
             .headers(headers -> headers.frameOptions().sameOrigin())
 

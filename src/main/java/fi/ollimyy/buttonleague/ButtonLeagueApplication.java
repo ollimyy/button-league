@@ -4,6 +4,7 @@ import fi.ollimyy.buttonleague.domain.AppUser;
 import fi.ollimyy.buttonleague.domain.AppUserRepository;
 import fi.ollimyy.buttonleague.domain.UserRole;
 import fi.ollimyy.buttonleague.domain.UserRoleRepository;
+import fi.ollimyy.buttonleague.service.TestDataInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +22,9 @@ public class ButtonLeagueApplication {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
+    @Autowired
+    private TestDataInitializer testDataInitializer;
+
     public static void main(String[] args) {
         SpringApplication.run(ButtonLeagueApplication.class, args);
     }
@@ -33,10 +37,12 @@ public class ButtonLeagueApplication {
             if (appUserRepository.findByUsername("admin") == null) {
                 try {
                     // Create ADMIN role
+                    // !!! CHANGE USERNAME FOR PRODUCTION !!!
                     UserRole adminRole = new UserRole("ADMIN");
                     adminRole = userRoleRepository.save(adminRole);
 
                     // Create admin user
+                    // !!! CHANGE PASSWORD FOR PRODUCTION !!!
                     String hashedPassword = passwordEncoder.encode("admin");
                     System.out.println("Created password hash: " + hashedPassword);
 
@@ -49,6 +55,10 @@ public class ButtonLeagueApplication {
                     e.printStackTrace();
                 }
             }
+
+            // Initialize test data, !!! comment this out in production if needed
+            testDataInitializer.initializeTeams();
+            testDataInitializer.initializeMatches();
         };
     }
 
