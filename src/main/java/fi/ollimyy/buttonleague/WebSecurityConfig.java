@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -18,17 +19,20 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        http
+            // These lines handle H2 console specific configuration
+            .csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
+            .headers(headers -> headers.frameOptions().sameOrigin())
+
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                 .requestMatchers("/", "/team-list", "/team/**", "/league-table", "/match-list", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
-             .and()
-                .formLogin()
-                .permitAll()
-             .and()
-                .logout()
-                .permitAll()
-             .and()
-                 .httpBasic();
+            )
+            .formLogin(form -> form.permitAll())
+            .logout(logout -> logout.permitAll())
+            .httpBasic(basic -> {});
+
         return http.build();
     }
 
