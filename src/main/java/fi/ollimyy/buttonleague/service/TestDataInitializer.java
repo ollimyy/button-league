@@ -166,7 +166,7 @@ public class TestDataInitializer {
                         titans, panthers, null, null, new HashSet<>());
                 matchRepository.save(match11);
 
-                Match match12 = new Match(LocalDate.now().plusDays(14), LocalTime.of(21, 0),
+                Match match12 = new Match(null, null,
                         vikings, kings, null, null, new HashSet<>());
                 matchRepository.save(match12);
 
